@@ -65,14 +65,9 @@ namespace ClinicManagementProject.Services
             throw new NotImplementedException();
         }
 
-        
-        
-
-
-        
-
-
-
-
+        public ICollection<Patient> GetAll(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

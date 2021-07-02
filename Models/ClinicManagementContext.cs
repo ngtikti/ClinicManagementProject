@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ClinicManagementProject.Models;
 
 namespace ClinicManagementProject.Models
 {
@@ -16,6 +17,8 @@ namespace ClinicManagementProject.Models
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Admin> Admins { get; set; }
+
+        public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -95,5 +98,8 @@ namespace ClinicManagementProject.Models
 
 
         }
+
+
+        public DbSet<ClinicManagementProject.Models.DoctorSchedule> DoctorSchedule { get; set; }
     }
 }

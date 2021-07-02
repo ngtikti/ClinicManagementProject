@@ -43,10 +43,15 @@ namespace ClinicManagementProject.Services
         {
             if (_context.Doctors.Count() == 0)
             {
-                _logger.LogInformation("No patient record");
+                _logger.LogInformation("No doctor record");
                 return null;
             }
             return _context.Doctors.ToList();
+        }
+
+        public ICollection<Doctor> GetAll(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

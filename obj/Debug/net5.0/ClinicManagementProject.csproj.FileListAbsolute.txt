@@ -288,3 +288,4 @@ C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Clin
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\ref\ClinicManagementProject.dll
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\ClinicManagementProject.pdb
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\ClinicManagementProject.genruntimeconfig.cache
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Patient\BookAppointment_Schedule.cshtml.g.cs

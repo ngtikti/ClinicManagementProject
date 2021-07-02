@@ -16,14 +16,18 @@ namespace ClinicManagementProject.Controllers
         private readonly IRepo<Patient, string> _patientrepo;
         private readonly ILoginService<PatientViewModel, string> _patientlogin;
         private readonly IRepo<Doctor, string> _doctorrepo;
+        private readonly IRepo<DoctorSchedule, List<int>> _doctorschedulerepo;
 
-        public PatientController(IRepo<Patient, string> patientrepo, IRepo<Doctor,string> doctorrepo, ILoginService<PatientViewModel, string> patientlogin)
+        public PatientController(IRepo<Patient, string> patientrepo, IRepo<Doctor,string> doctorrepo, IRepo<DoctorSchedule, List<int>> doctorschedulerepo, ILoginService<PatientViewModel, string> patientlogin)
         {
             //_context = context; //for passing context into actions in controller
             _patientrepo = patientrepo;
             _patientlogin = patientlogin;
 
             _doctorrepo = doctorrepo;
+
+            _doctorschedulerepo = doctorschedulerepo;
+
     
         }
 
@@ -140,7 +144,7 @@ namespace ClinicManagementProject.Controllers
             return View();
         }
 
-
+        //patient console to link to all other modules
         public ActionResult PatientConsole(Patient p) //...since model is patient, passed has to be patient or child of patient, else null. to show patient console page...have action links to bookappointment (view doctor, view doctorschedule,update doctorschedule), access reportandbill, cancel existing appointment
         {
             Patient pat = _patientrepo.Get(p.Username);//calling the actual patient using username in order to get the name to say welcome lol
@@ -148,18 +152,28 @@ namespace ClinicManagementProject.Controllers
             return View(pat);//...pat is to make sure model is refering to pat....else null error....should pass model.Username to the action links
         }
 
+
         //to bookappointment (view doctor list, then view doctorschedule,update doctorschedule)
         public ActionResult BookAppointment(string str) //model is doctor list, action link to doctorschedule by Doctor_Id
         {
-            string patusername = str;
+            
+            TempData["PatientUsername"] = str; //str is from PatientConsole page, put in temp data to pass it on to next pages for them to know patient_username
             ICollection<Doctor> doctors = _doctorrepo.GetAll();
+
             return View(doctors);
         }
 
-        //public ActionResult BookAppointment_Schedule()//this would be an action link to a post method (with doctorschedule model) to update doctorschedulerepo
-        //{
+        public ActionResult BookAppointment_Schedule(int id)//this would be an action link to a post method (with doctorschedule model) to update doctorschedulerepo...getting the doctor_id as id, and patient_username as TempData["PatientUsername"]
+        {
             //need to figure out how to pass both patusername and doctor_id into here....then subsequently show list of DoctorSchedule as view() with doctor_id....then post method is to update the patient_Id of the selected schedule
-        //}
+            var patientUsername = TempData["PatientUsername"]; //retrieving patientusername from bookappointment action
+            Patient pat = _patientrepo.Get(patientUsername.ToString()); //getting the real patient
+            int pat_id = pat.Patient_Id; //getting the patient Id to pass onto next page in order to add into doctorschedule
+
+            ICollection<DoctorSchedule> doctorSchedule = _doctorschedulerepo.GetAll(id); //getting all the doctorschedule
+
+            return View(doctorSchedule);
+        }
 
     }
 }

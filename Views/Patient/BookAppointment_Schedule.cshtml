@@ -1,5 +1,4 @@
-﻿@model IEnumerable<ClinicManagementProject.Models.Doctor>
-
+﻿@model IEnumerable<ClinicManagementProject.Models.DoctorSchedule>
 
 @{
     Layout = null;
@@ -10,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>BookAppointment</title>
+    <title>BookAppointment_Schedule</title>
 </head>
 <body>
 <p>
@@ -19,26 +18,25 @@
 <table class="table">
     <thead>
         <tr>
-            
-            
+
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Time)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            
-            <td>
-                @Html.ActionLink("View Schedule", "BookAppointment_Schedule", "Patient", new { Id = item.Doctor_Id })
 
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+
+            <td>
+                @Html.ActionLink("Book", "BookSlotForPatient", new { timeid = item.Timeslot_Id, docid = item.Doctor_Id }) 
+               
             </td>
         </tr>
 }
