@@ -43,7 +43,7 @@ namespace ClinicManagementProject.Services
         {
             try
             {
-                _context.Update(t);
+                _context.Update(t);//this requires get to be called first
                 _context.SaveChanges();
                 return true;
             }

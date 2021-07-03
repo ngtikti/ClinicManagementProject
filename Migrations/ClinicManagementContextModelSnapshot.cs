@@ -29,6 +29,40 @@ namespace ClinicManagementProject.Migrations
                     b.ToTable("Admins");
                 });
 
+            modelBuilder.Entity("ClinicManagementProject.Models.ConsultationDetail", b =>
+                {
+                    b.Property<int>("Consultation_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("Bill")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Consultation_Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Consultation_Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Doctor_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Patient_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Consultation_Id");
+
+                    b.HasIndex("Doctor_Id");
+
+                    b.HasIndex("Patient_Id");
+
+                    b.ToTable("ConsultationDetails");
+                });
+
             modelBuilder.Entity("ClinicManagementProject.Models.Doctor", b =>
                 {
                     b.Property<int>("Doctor_Id")
@@ -183,6 +217,25 @@ namespace ClinicManagementProject.Migrations
                             Phone = "32423434",
                             Username = "abc"
                         });
+                });
+
+            modelBuilder.Entity("ClinicManagementProject.Models.ConsultationDetail", b =>
+                {
+                    b.HasOne("ClinicManagementProject.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("Doctor_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClinicManagementProject.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("Patient_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("ClinicManagementProject.Models.DoctorSchedule", b =>

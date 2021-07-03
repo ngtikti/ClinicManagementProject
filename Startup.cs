@@ -30,6 +30,7 @@ namespace ClinicManagementProject
             services.AddScoped<IRepo<Patient, string>, PatientRepo>();
             services.AddScoped<IRepo<Doctor, string>, DoctorRepo>();
             services.AddScoped<IRepo<DoctorSchedule, List<int>>, DoctorScheduleRepo>();
+            services.AddScoped<IRepo<ConsultationDetail, int>, ConsultationDetailRepo>();
             services.AddScoped<ILoginService<PatientViewModel, string>, PatientLoginService>();
             //services.AddScoped<PatientLoginService>();
         }

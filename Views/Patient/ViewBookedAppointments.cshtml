@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ClinicManagementProject.Models.ConsultationDetail>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewBookedAppointments</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Consultation_Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Consultation_Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Consultation_Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Consultation_Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bill)
+            </td>
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Consultation_Id">Edit</a> |*@
+                @Html.ActionLink("Cancel Appointment", "CancelAppointment", "Patient", new { consultationid = item.Consultation_Id})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<section>
+    @Html.ActionLink("Return to Main Page", "PatientConsole", "Patient")
+</section>
+</body>
+</html>

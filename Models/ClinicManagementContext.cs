@@ -20,6 +20,8 @@ namespace ClinicManagementProject.Models
 
         public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
 
+        public DbSet<ConsultationDetail> ConsultationDetails { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

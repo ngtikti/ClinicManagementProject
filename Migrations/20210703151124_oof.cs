@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClinicManagementProject.Migrations
 {
-    public partial class forlocaldb : Migration
+    public partial class oof : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,36 @@ namespace ClinicManagementProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patients", x => x.Patient_Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConsultationDetails",
+                columns: table => new
+                {
+                    Consultation_Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Patient_Id = table.Column<int>(type: "int", nullable: false),
+                    Doctor_Id = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Consultation_Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Consultation_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Bill = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConsultationDetails", x => x.Consultation_Id);
+                    table.ForeignKey(
+                        name: "FK_ConsultationDetails_Doctors_Doctor_Id",
+                        column: x => x.Doctor_Id,
+                        principalTable: "Doctors",
+                        principalColumn: "Doctor_Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConsultationDetails_Patients_Patient_Id",
+                        column: x => x.Patient_Id,
+                        principalTable: "Patients",
+                        principalColumn: "Patient_Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,6 +139,16 @@ namespace ClinicManagementProject.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ConsultationDetails_Doctor_Id",
+                table: "ConsultationDetails",
+                column: "Doctor_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConsultationDetails_Patient_Id",
+                table: "ConsultationDetails",
+                column: "Patient_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DoctorSchedule_Patient_Id",
                 table: "DoctorSchedule",
                 column: "Patient_Id");
@@ -118,6 +158,9 @@ namespace ClinicManagementProject.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admins");
+
+            migrationBuilder.DropTable(
+                name: "ConsultationDetails");
 
             migrationBuilder.DropTable(
                 name: "DoctorSchedule");

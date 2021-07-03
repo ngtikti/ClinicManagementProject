@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ClinicManagementProject.Models.DoctorSchedule>
+﻿@model IEnumerable<ClinicManagementProject.Models.ConsultationDetail>
 
 @{
     Layout = null;
@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>BookAppointment_Schedule</title>
+    <title>ViewPastReport</title>
 </head>
 <body>
     <p>
@@ -20,9 +20,14 @@
             <tr>
 
                 <th>
+                    @Html.DisplayNameFor(model => model.Doctor_Id)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Time)
                 </th>
-
+                <th>
+                    @Html.DisplayNameFor(model => model.Consultation_Remarks)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -32,12 +37,13 @@
                 <tr>
 
                     <td>
+                        @Html.DisplayFor(modelItem => item.Doctor_Id)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Time)
                     </td>
-
                     <td>
-                        @Html.ActionLink("Book", "BookSlotForPatient", new { timeid = item.Timeslot_Id, docid = item.Doctor_Id })
-
+                        @Html.DisplayFor(modelItem => item.Consultation_Remarks)
                     </td>
                 </tr>
             }

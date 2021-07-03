@@ -14,7 +14,19 @@
         @ViewData["Message"]
     </section>
     <section>
-        @Html.ActionLink("Book Appointment", "BookAppointment", new {str = Model.Username } )
+        @Html.ActionLink("Book Appointment", "BookAppointment", new { str = Model.Username })
+    </section>
+    <br />
+    <section>
+        @Html.ActionLink("View Upcoming Appointments", "ViewBookedAppointments")
+    </section>
+    <br />
+    <section>
+        @Html.ActionLink("View Past Reports", "ViewPastReport")
+    </section>
+    <section class="alert alert-danger">
+        @ViewData["BookingMessage"]
+        @ViewData["DeleteBookingMessage"]
     </section>
 </body>
 
