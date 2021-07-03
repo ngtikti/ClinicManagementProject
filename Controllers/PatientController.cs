@@ -168,11 +168,70 @@ namespace ClinicManagementProject.Controllers
             //need to figure out how to pass both patusername and doctor_id into here....then subsequently show list of DoctorSchedule as view() with doctor_id....then post method is to update the patient_Id of the selected schedule
             var patientUsername = TempData["PatientUsername"]; //retrieving patientusername from bookappointment action
             Patient pat = _patientrepo.Get(patientUsername.ToString()); //getting the real patient
-            int pat_id = pat.Patient_Id; //getting the patient Id to pass onto next page in order to add into doctorschedule
+            int patid = pat.Patient_Id; //getting the patient Id to pass onto next page in order to add into doctorschedule
+            TempData["PatientId"] = patid;
 
-            ICollection<DoctorSchedule> doctorSchedule = _doctorschedulerepo.GetAll(id); //getting all the doctorschedule
+            ICollection<DoctorSchedule> doctorSchedule = _doctorschedulerepo.GetAll(id); //getting all the doctorschedule according to doctorId
+            return View(doctorSchedule.Where(ds => ds.Patient_Id == null)); //displaying only the slots where patient_id has not been input
+        }
 
-            return View(doctorSchedule);
+        public ActionResult BookSlotForPatient(int timeid, int docid)//model will be the doctorschedule
+        {
+            var patid = TempData["PatientId"]; //getting patientId from previous action
+            TempData["PatientId"] = patid; //just passing along...
+            //very crude way to pass to post method, optimise it if possible after
+            TempData["TimeId"] = timeid;
+            TempData["DocId"] = docid;
+
+
+            ICollection<Doctor> doctors = _doctorrepo.GetAll();
+            Doctor doc = doctors.SingleOrDefault(d => d.Doctor_Id == docid);
+            ViewData["DoctorName"] = doc.Name;
+
+
+            List<int> timeslotchosen = new List<int> { timeid, docid }; //putting composite id in format for Get method in doctorschedulerepo
+            DoctorSchedule slotToBook = _doctorschedulerepo.Get(timeslotchosen);
+            return View(slotToBook);
+        }
+
+        [HttpPost]
+        public ActionResult BookSlotForPatient()//model will be the doctorschedule
+        {
+            //getting ids from previous section
+            int patid = Convert.ToInt32(TempData["PatientId"]); //getting patientId from previous action
+            int timeid = Convert.ToInt32(TempData["TimeId"]);
+            int docid = Convert.ToInt32(TempData["DocId"]);
+
+            List<int> timeslotchosen = new List<int> { timeid, docid }; //for composite key
+            DoctorSchedule doctorSchedule = _doctorschedulerepo.Get(timeslotchosen); //getting doctorschedule to update
+            
+            doctorSchedule.Patient_Id = patid; //adding patid to doctorschedule
+            bool flag = _doctorschedulerepo.Edit(timeslotchosen, doctorSchedule); //updating repository to push update to database
+            if (flag)
+            {
+                ViewData["Message"] = "Booking Success";
+                //should update consultation detail as well. create new consultation detail, and add consultation status as opened...add patientid, docid, and date
+
+
+                //returning to console, passing pat as patient...passing the whole patient, too long query due to pass word, so just pass username and patientId
+                Patient pat = _patientrepo.GetAll().SingleOrDefault(p=>p.Patient_Id==patid);
+                Patient pattopass = new Patient();
+                pattopass.Username = pat.Username;
+                pattopass.Patient_Id = pat.Patient_Id;
+                pattopass.Name = pat.Name;
+                return RedirectToAction("PatientConsole", pattopass);//returning to console, passing pat as patient...passing the whole patient, too long query due to pass word, so just pass username and patientId
+            }
+            else
+            {
+                
+                ViewData["Message"] = "Booking failed";
+                //crude way to pass back data again
+                TempData["PatientId"] = patid; //just passing along... 
+                TempData["TimeId"] = timeid;
+                TempData["DocId"] = docid;
+                return View(doctorSchedule);
+            }
+               
         }
 
     }

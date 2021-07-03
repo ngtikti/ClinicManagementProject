@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClinicManagementProject.Migrations
 {
-    public partial class oof : Migration
+    public partial class forlocaldb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

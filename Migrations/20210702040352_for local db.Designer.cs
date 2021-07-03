@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagementProject.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20210628162638_oof")]
-    partial class oof
+    [Migration("20210702040352_for local db")]
+    partial class forlocaldb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
