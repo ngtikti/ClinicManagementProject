@@ -31,8 +31,6 @@ namespace ClinicManagementProject.Controllers
 
             _consultationdetailrepo = consultationdetailrepo;
 
-
-
         }
 
 
@@ -50,32 +48,7 @@ namespace ClinicManagementProject.Controllers
         [HttpPost]
         public ActionResult Login(PatientViewModel patient)
         {
-            //Patient pat = _context.Patients.SingleOrDefault(p => p.Username == patient.Username); //should work as username is validated as only one in register
 
-            //if (pat != null)
-            //{
-            //    using var hmac = new HMACSHA512(pat.PasswordSalt); //using pat passwordsalt as salt for keyed in patient
-            //    var checkPass = hmac.ComputeHash(Encoding.UTF8.GetBytes(patient.EnteredPassword));//encrypting into byte[] for keyed in password in login field...
-            //    //checking if the byte[] of pat is the same as the byte[] of patient
-            //    for(int i =0;i<checkPass.Length; i++)
-            //    {
-            //        if (checkPass[i] != pat.Password[i])
-            //        {
-            //            ViewData["Message"] = "Wrong username or password";
-            //            return View();
-            //        }
-            //    }
-            //    ViewData["Message"] = "Welcome" + pat.Name;
-            //    TempData["PatientId"] = pat.Patient_Id;
-            //    TempData["PatientName"] = pat.Name;
-            //    return RedirectToAction("PatientConsole", "Patient"); //view and controller syntax
-
-            //}
-            //else
-            //    ViewData["Message"] = "Invalid Username or Password";
-            //return View();//remain to same login page, and display invalid username or password
-            //calling patientloginservice object
-            
             bool flag = _patientlogin.Login(patient);
             if (flag)
             {
@@ -95,8 +68,7 @@ namespace ClinicManagementProject.Controllers
             }
 
         }
-
-       
+ 
 
         public ActionResult Register()
         {
@@ -109,38 +81,7 @@ namespace ClinicManagementProject.Controllers
         {
             ////validation will only be done when post..when button is pressed...and modelstate.isvalid allows us to make it such that the create to be passed to database only if true. important when savechanges. else database will reject cause required is required
             //if(ModelState.IsValid)//checking if patientviewmodel is entered correctly (includes inherited class of patient too)...with all the validations.eg. making sure required fields are keyed in, also checking through if password matches or not, else it will give exceptions
-            //{
-            //    Patient myPatient = patient;
-            //    List<Patient> patients = _context.Patients.ToList();
-            //    //encrypting password
-            //    using var hmac = new HMACSHA512();
-            //    myPatient.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(patient.EnteredPassword)); //encrypting keyed in password as password to myPatient.Password, with key
-            //    myPatient.PasswordSalt = hmac.Key;
-
-            //    //checking if username taken or not in patients
-            //    bool usertaken = false;
-            //    foreach (var item in patients)
-            //    {
-            //        if (patient.Username.ToLower() == item.Username.ToLower())//have to compare using lower as sql is case sensitive, will give fk error
-            //        {
-            //            usertaken = true;
-            //        }
-            //    }
-            //    if (usertaken == true)
-            //    {
-            //        ViewBag.Message = "Username taken, please use another";
-            //        return View();
-            //    }
-            //    else
-            //    {
-            //        _context.Patients.Add(myPatient);//adding myPatient to Patients, passed
-            //        _context.SaveChanges();
-            //        TempData["PatientUsername"] = myPatient.Username; //passing tempdata to login page for them to login
-            //        return RedirectToAction("Login"); //get method to show login page
-            //    }
-            //}
-            //ViewBag.Message = "Please fill in all the fields accordingly";
-
+ 
             
             bool flag = _patientlogin.Register(patient);
             if (flag)
@@ -166,6 +107,9 @@ namespace ClinicManagementProject.Controllers
             //for displaying any message from other modules
             ViewData["BookingMessage"] = TempData["BookingMessage"]; //this works as tempdata will only be there once from previous page...after that will be gone
             ViewData["DeleteBookingMessage"] = TempData["DeleteBookingMessage"];
+            ViewData["PaidBillMessage"] = TempData["PaidBillMessage"];
+            ViewData["ParticularsUpdateMessage"] = TempData["ParticularsUpdateMessage"];
+            ViewData["ChangePasswordMessage"]=TempData["ChangePasswordMessage"];
             return View(pat);//...pat is to make sure model is refering to pat....else null error....should pass model.Username to the action links
         }
 
@@ -315,22 +259,121 @@ namespace ClinicManagementProject.Controllers
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
         //module to make payment (for consultation status payment pending, if any) [need testing with whole code]
-        public ActionResult MakePayment()
+        public ActionResult PendingPaymentList()
         {
-            return View();
+            int patid = Convert.ToInt32(TempData.Peek("PatientId"));
+            ICollection<ConsultationDetail> consultationDetails = _consultationdetailrepo.GetAll();
+            ICollection<ConsultationDetail> pendingPayment;
+            if (consultationDetails !=null)
+            {
+                pendingPayment = consultationDetails.Where(cd => cd.Patient_Id == patid && cd.Consultation_Status == "pending payment").ToList(); //view those appointments that were closed
+            }
+            else
+            {
+                pendingPayment= new List<ConsultationDetail> { };//passing a null list of models
+            }
+
+
+            return View(pendingPayment);
         }
+
+        public ActionResult PayBill(int consultationid)
+        {
+            TempData["ConsultationId"] = consultationid;
+            ConsultationDetail slottopay = _consultationdetailrepo.Get(consultationid);
+            return View(slottopay);
+        }
+
+        [HttpPost]
+        public ActionResult PayBill()//dummy page tho
+        {
+            ConsultationDetail slottopay = _consultationdetailrepo.Get(Convert.ToInt32(TempData.Peek("ConsultationId")));
+            slottopay.Consultation_Status = "closed"; //paid alr, so status is closed
+            bool flag = _consultationdetailrepo.Edit(Convert.ToInt32(TempData.Peek("ConsultationId")), slottopay);//updating the database
+            if (flag)
+            {
+                TempData["PaidBillMessage"] = "Bill paid!";
+            }
+            else
+            {
+                TempData["PaidBillMessage"] = "Bill not paid, please try again";
+            }
+            return RedirectToAction("PatientConsole");
+        }
+
+        
 
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
         //modules to update details for patient
         public ActionResult UpdateParticulars() //for phone, address, etc personal particulars...will have an edit field, and a post method for this
         {
-            return View();
+            Patient pat = _patientrepo.Get(TempData.Peek("PatientUsername").ToString());
+            return View(pat);
         }
 
-        public ActionResult ChangePassword() //module to change password
+        [HttpPost]
+        public ActionResult UpdateParticulars(Patient editedpat)//patientusername passed from get page, editedpat is from form
         {
-            return View();
+            Patient pat = _patientrepo.Get(TempData.Peek("PatientUsername").ToString()); //getting patient
+            pat.Name = editedpat.Name;
+            pat.Phone = editedpat.Phone;
+
+            bool flag = _patientrepo.Edit(TempData.Peek("PatientUsername").ToString(), pat);
+            if (flag)
+            {
+                TempData["ParticularsUpdateMessage"] = "Particulars Updated!";
+            }
+            else
+            {
+                TempData["ParticularsUpdateMessage"] = "Update of particulars failed...please try again";
+            }
+            return RedirectToAction("PatientConsole");
         }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //for password changing
+        public ActionResult ChangePassword() //module to change password...model is patientviewmodel
+        { 
+            PatientViewModel patvm = new PatientViewModel(); //null placeholder
+            return View(patvm);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string oldPassword, PatientViewModel editedpat)//can use ifmodelstate
+        {
+ 
+            if (editedpat.EnteredPassword==editedpat.RetypeEnteredPassword && editedpat.EnteredPassword != null)//first checking if passwords entered are ok
+            {
+                Patient pat = _patientrepo.Get(TempData.Peek("PatientUsername").ToString());
+                //checking if oldpassword is correct
+                PatientViewModel t = new PatientViewModel();
+                t.EnteredPassword = oldPassword;
+                t.Username = pat.Username;
+                bool flag = _patientlogin.Login(t); //login check to see if oldpassword is correct
+                if (flag)
+                {
+                    //old pw correct and passwords are same, to update password and password salt
+                    using var hmac = new HMACSHA512();
+                    pat.Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(editedpat.EnteredPassword));
+                    pat.PasswordSalt = hmac.Key;
+                    _patientrepo.Edit(pat.Username, pat);//updating patient in database with new password and passwordsalt
+                    TempData["ChangePasswordMessage"] = "Password change success!";
+                    return RedirectToAction("PatientConsole");
+                }
+                else
+                {
+                    ViewData["ChangePassword"] = "Old password does not match";
+                    return View(editedpat);
+                }              
+            }
+            ViewData["ChangePassword"] = "Change password failed....please try again";
+            return View(editedpat);
+        }
+            
+           
+        
+
+
 
     }
 }

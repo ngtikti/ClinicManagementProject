@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace ClinicManagementProject.Models
         [ForeignKey("Doctor_Id")]
         public Doctor Doctor { get; set; }
 
+        [RegularExpression(@"[0-9]{4}\s-\s[0 - 9]{4}", ErrorMessage = "key Time in the following Format: XXXX - XXXX")]
         public string Time { get; set; }//timing of slot...pre-seeded...slot 1 to timing 1, timing 2, timing 3
         
         //the patient to be added to the slot. can be nullable

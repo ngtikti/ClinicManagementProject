@@ -41,8 +41,17 @@ namespace ClinicManagementProject.Services
 
         public Patient Get(string k) //method to get patient by username...for log in possibly
         {
-            var patient = _context.Patients.SingleOrDefault(p => p.Username == k);
-            return patient;
+            try
+            {
+                var patient = _context.Patients.SingleOrDefault(p => p.Username == k);
+                return patient;
+            }
+            catch (Exception e)
+            {
+                var patient = new Patient(); //null patient
+                return patient;
+            }
+ 
         }
 
         public ICollection<Patient> GetAll() // method to retrieve patient list
@@ -62,7 +71,17 @@ namespace ClinicManagementProject.Services
 
         public bool Edit(string k, Patient t)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Update(t);//this requires get to be called first
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Unable to update doctor schedule " + k + e.Message);
+                return false;
+            }
         }
 
         public ICollection<Patient> GetAll(int id)

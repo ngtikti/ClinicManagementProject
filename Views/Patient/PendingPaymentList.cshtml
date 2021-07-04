@@ -9,28 +9,25 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>ViewBookedAppointments</title>
+    <title>PendingPaymentList</title>
 </head>
 <body>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Doctor)
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Timeslot)
+                @Html.DisplayNameFor(model => model.Consultation_Date)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Consultation_Remarks)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Consultation_Status)
-            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Bill)
             </th>
@@ -40,27 +37,23 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            
             <td>
-                @Html.DisplayFor(modelItem => item.Patient.Gender)
+                @Html.DisplayFor(modelItem => item.Doctor_Id)
             </td>
+ 
             <td>
-                @Html.DisplayFor(modelItem => item.Doctor.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Timeslot)
+                @Html.DisplayFor(modelItem => item.Consultation_Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Consultation_Remarks)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Consultation_Status)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Bill)
             </td>
             <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Consultation_Id">Edit</a> |*@
-                @Html.ActionLink("Cancel Appointment", "CancelAppointment", "Patient", new { consultationid = item.Consultation_Id})
+                @Html.ActionLink("Pay Bill", "PayBill", "Patient", new { consultationid = item.Consultation_Id })
             </td>
         </tr>
 }

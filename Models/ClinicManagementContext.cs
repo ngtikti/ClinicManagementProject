@@ -102,6 +102,7 @@ namespace ClinicManagementProject.Models
         }
 
 
-        public DbSet<ClinicManagementProject.Models.DoctorSchedule> DoctorSchedule { get; set; }
+        public DbSet<ClinicManagementProject.Models.DoctorViewModel> DoctorViewModel { get; set; }
+
     }
 }

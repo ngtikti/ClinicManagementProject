@@ -30,7 +30,10 @@ namespace ClinicManagementProject.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EnteredPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RetypeEnteredPassword = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,7 +68,7 @@ namespace ClinicManagementProject.Migrations
                     Patient_Id = table.Column<int>(type: "int", nullable: false),
                     Doctor_Id = table.Column<int>(type: "int", nullable: false),
                     Timeslot = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Date_Of_Consultation = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Consultation_Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Consultation_Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Consultation_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bill = table.Column<int>(type: "int", nullable: true)
@@ -88,7 +91,7 @@ namespace ClinicManagementProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DoctorSchedule",
+                name: "DoctorSchedules",
                 columns: table => new
                 {
                     Timeslot_Id = table.Column<int>(type: "int", nullable: false),
@@ -98,15 +101,15 @@ namespace ClinicManagementProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DoctorSchedule", x => new { x.Doctor_Id, x.Timeslot_Id });
+                    table.PrimaryKey("PK_DoctorSchedules", x => new { x.Doctor_Id, x.Timeslot_Id });
                     table.ForeignKey(
-                        name: "FK_DoctorSchedule_Doctors_Doctor_Id",
+                        name: "FK_DoctorSchedules_Doctors_Doctor_Id",
                         column: x => x.Doctor_Id,
                         principalTable: "Doctors",
                         principalColumn: "Doctor_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DoctorSchedule_Patients_Patient_Id",
+                        name: "FK_DoctorSchedules_Patients_Patient_Id",
                         column: x => x.Patient_Id,
                         principalTable: "Patients",
                         principalColumn: "Patient_Id",
@@ -115,13 +118,13 @@ namespace ClinicManagementProject.Migrations
 
             migrationBuilder.InsertData(
                 table: "Doctors",
-                columns: new[] { "Doctor_Id", "Age", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Username" },
-                values: new object[] { 1, 30, "Male", "TimDoc", new byte[] { 0 }, new byte[] { 0 }, "323524523", "docabc" });
+                columns: new[] { "Doctor_Id", "Age", "Discriminator", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Username" },
+                values: new object[] { 1, 30, "Doctor", "Male", "TimDoc", new byte[] { 0 }, new byte[] { 0 }, "323524523", "docabc" });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
-                columns: new[] { "Doctor_Id", "Age", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Username" },
-                values: new object[] { 2, 30, "Male", "TiDoc", new byte[] { 0, 0 }, new byte[] { 0, 0 }, "323524523", "docoof" });
+                columns: new[] { "Doctor_Id", "Age", "Discriminator", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Username" },
+                values: new object[] { 2, 30, "Doctor", "Male", "TiDoc", new byte[] { 0, 0 }, new byte[] { 0, 0 }, "323524523", "docoof" });
 
             migrationBuilder.InsertData(
                 table: "Patients",
@@ -129,7 +132,7 @@ namespace ClinicManagementProject.Migrations
                 values: new object[] { 1, 30, "Male", "Tim", new byte[] { 0 }, new byte[] { 0 }, "32423434", "abc" });
 
             migrationBuilder.InsertData(
-                table: "DoctorSchedule",
+                table: "DoctorSchedules",
                 columns: new[] { "Doctor_Id", "Timeslot_Id", "Patient_Id", "Time" },
                 values: new object[,]
                 {
@@ -150,8 +153,8 @@ namespace ClinicManagementProject.Migrations
                 column: "Patient_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DoctorSchedule_Patient_Id",
-                table: "DoctorSchedule",
+                name: "IX_DoctorSchedules_Patient_Id",
+                table: "DoctorSchedules",
                 column: "Patient_Id");
         }
 
@@ -164,7 +167,7 @@ namespace ClinicManagementProject.Migrations
                 name: "ConsultationDetails");
 
             migrationBuilder.DropTable(
-                name: "DoctorSchedule");
+                name: "DoctorSchedules");
 
             migrationBuilder.DropTable(
                 name: "Doctors");

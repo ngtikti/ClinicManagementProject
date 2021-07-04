@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagementProject.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20210704031606_oof")]
+    [Migration("20210704143550_oof")]
     partial class oof
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,14 +41,14 @@ namespace ClinicManagementProject.Migrations
                     b.Property<int?>("Bill")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Consultation_Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Consultation_Remarks")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Consultation_Status")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Date_Of_Consultation")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Doctor_Id")
                         .HasColumnType("int");
@@ -78,6 +78,10 @@ namespace ClinicManagementProject.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -102,6 +106,8 @@ namespace ClinicManagementProject.Migrations
                     b.HasKey("Doctor_Id");
 
                     b.ToTable("Doctors");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Doctor");
 
                     b.HasData(
                         new
@@ -146,7 +152,7 @@ namespace ClinicManagementProject.Migrations
 
                     b.HasIndex("Patient_Id");
 
-                    b.ToTable("DoctorSchedule");
+                    b.ToTable("DoctorSchedules");
 
                     b.HasData(
                         new
@@ -222,6 +228,21 @@ namespace ClinicManagementProject.Migrations
                             Phone = "32423434",
                             Username = "abc"
                         });
+                });
+
+            modelBuilder.Entity("ClinicManagementProject.Models.DoctorViewModel", b =>
+                {
+                    b.HasBaseType("ClinicManagementProject.Models.Doctor");
+
+                    b.Property<string>("EnteredPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RetypeEnteredPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("DoctorViewModel");
                 });
 
             modelBuilder.Entity("ClinicManagementProject.Models.ConsultationDetail", b =>
