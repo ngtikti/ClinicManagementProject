@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagementProject.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20210703151124_oof")]
+    [Migration("20210704031606_oof")]
     partial class oof
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,13 +47,16 @@ namespace ClinicManagementProject.Migrations
                     b.Property<string>("Consultation_Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("Date_Of_Consultation")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Doctor_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Patient_Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Time")
+                    b.Property<string>("Timeslot")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Consultation_Id");

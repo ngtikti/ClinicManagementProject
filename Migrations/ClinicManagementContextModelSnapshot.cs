@@ -45,13 +45,16 @@ namespace ClinicManagementProject.Migrations
                     b.Property<string>("Consultation_Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("Date_Of_Consultation")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Doctor_Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Patient_Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Time")
+                    b.Property<string>("Timeslot")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Consultation_Id");

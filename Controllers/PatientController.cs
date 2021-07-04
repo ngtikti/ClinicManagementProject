@@ -222,7 +222,7 @@ namespace ClinicManagementProject.Controllers
                 ConsultationDetail consultationDetail = new ConsultationDetail();
                 consultationDetail.Doctor_Id = docid;
                 consultationDetail.Patient_Id = patid;
-                consultationDetail.Time = doctorSchedule.Time;
+                consultationDetail.Timeslot = doctorSchedule.Time;
                 consultationDetail.Consultation_Status = "opened"; //new booking so open consultation status
                 _consultationdetailrepo.Add(consultationDetail);
 
@@ -271,7 +271,7 @@ namespace ClinicManagementProject.Controllers
         {
             //deleting patient_id from doctorslot to free up doctorschedule
             ConsultationDetail con = _consultationdetailrepo.Get(Convert.ToInt32(TempData.Peek("ConsultationId")));
-            string timebooked = con.Time; 
+            string timebooked = con.Timeslot; 
             int docid = con.Doctor_Id;
             DoctorSchedule docsch = _doctorschedulerepo.GetAll().SingleOrDefault(ds => ds.Time == timebooked && ds.Doctor_Id == docid);
             int timeid = docsch.Timeslot_Id;

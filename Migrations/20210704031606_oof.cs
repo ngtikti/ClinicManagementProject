@@ -64,7 +64,8 @@ namespace ClinicManagementProject.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Patient_Id = table.Column<int>(type: "int", nullable: false),
                     Doctor_Id = table.Column<int>(type: "int", nullable: false),
-                    Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Timeslot = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date_Of_Consultation = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Consultation_Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Consultation_Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Bill = table.Column<int>(type: "int", nullable: true)
