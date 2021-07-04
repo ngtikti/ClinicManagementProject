@@ -50,7 +50,7 @@ namespace ClinicManagementProject
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{Controller=Patient}/{Action=Login}/{Id?}");
+                    pattern: "{Controller=Home}/{Action=Index}/{Id?}");
             });
         }
     }

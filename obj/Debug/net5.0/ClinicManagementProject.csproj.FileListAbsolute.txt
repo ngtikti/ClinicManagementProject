@@ -297,3 +297,4 @@ C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razo
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Patient\PayBill.cshtml.g.cs
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Patient\UpdateParticulars.cshtml.g.cs
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Patient\ChangePassword.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
