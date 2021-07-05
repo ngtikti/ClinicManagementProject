@@ -312,3 +312,11 @@ C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razo
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatViewAll.cshtml.g.cs
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\Register.cshtml.g.cs
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\_AdminLayout.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\AboutUs.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\ConsultationDetail.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\ConsultationUpdate.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\DoctorConsole.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\Login.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\Register.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\ViewDoctor_Schedule.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Doctor\_DoctorLayout.cshtml.g.cs
