@@ -123,7 +123,8 @@ namespace ClinicManagementProject.Controllers
             
             consDetail.Bill = Convert.ToInt32(consBill);
 
-            consUpdateRes = _consultationDetailrepo.Edit(new List<int>() {consDetail.Consultation_Id}, consDetail);
+            //consUpdateRes = _consultationDetailrepo.Edit(new List<int>() {consDetail.Consultation_Id}, consDetail);
+            consUpdateRes = _consultationDetailrepo.Edit(consDetail.Consultation_Id, consDetail);
 
             if (consUpdateRes)
             {
@@ -241,7 +242,8 @@ namespace ClinicManagementProject.Controllers
         public ActionResult ConsultationDetail(int patId, int docId)
         {
             //ConsultationDetail consultationDetail = _consultationDetailrepo.Get(doc_id); //getting all the doctorschedule
-            ConsultationDetail consultationDetail = _consultationDetailrepo.Get(new List<int>() { patId, docId }); //getting all the doctorschedule
+            //ConsultationDetail consultationDetail = _consultationDetailrepo.Get(new List<int>() { patId, docId }); //getting all the doctorschedule
+            ConsultationDetail consultationDetail = _consultationDetailrepo.GetAll().SingleOrDefault(cd => cd.Patient_Id == patId && cd.Doctor_Id == docId); //might give error btw....one patient can have multiple timeslots for a doctor
 
             return View(consultationDetail);
         }
