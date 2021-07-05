@@ -8,22 +8,23 @@ namespace ClinicManagementProject.Services
 {
     public class DoctorLoginService : ILoginService<DoctorViewModel, string>
     {
-        public DoctorLoginService()
-        {
-        }
-        private IRepo<Doctor, string> _repo;
-        private IRepo<DoctorSchedule, string> _repoSch;
-
-        public DoctorLoginService(IRepo<DoctorSchedule, string> doctorSchRepo, IRepo<Doctor, string> doctorRepo) //didnt add logger. ok?....dont need context, as its in adminrepo alr
+        public DoctorLoginService(IRepo<Doctor, string> doctorRepo)
         {
             _repo = doctorRepo;
-            _repoSch = doctorSchRepo;
-
+            //IScheduleD<DoctorSchedule, string> doctorSchRepo
+            //_repoSch = doctorSchRepo;
         }
+        //public DoctorLoginService()
+        //{
+        //}
+        private readonly IRepo<Doctor, string> _repo;
+        //private readonly IScheduleD<DoctorSchedule, string> _repoSch;
+
 
         public bool Login(DoctorViewModel t)
         {
-            var doc = _repo.Get(t.Username);//getting doc in admins table with username same as adminviewmodel t
+            Doctor doc = new Doctor(); 
+              doc =   _repo.Get(t.Username);//getting doc in admins table with username same as adminviewmodel t
             if (doc != null)
             {
                 using var hmac = new HMACSHA512(doc.PasswordSalt); //using doc passwordsalt as salt for keyed in admin
@@ -34,7 +35,6 @@ namespace ClinicManagementProject.Services
                     if (checkPass[i] != doc.Password[i])
                     {
                         return false; //password wrong
-
 
                     }
                 }
@@ -84,24 +84,24 @@ namespace ClinicManagementProject.Services
             return false; //modelstate invalid, fill in properly
         }
 
-        public bool AddSchedule(DoctorScheduleViewModel t)
-        {
-            DoctorSchedule sch = t;
-            ICollection<DoctorSchedule> schedules = _repoSch.GetAll();
-            bool timetaken = false;
-            foreach (var item in schedules)
-            {
-                if (t.Time == item.Time)
-                    timetaken = true;
-            }
-            if (timetaken == true)
-                return false;
-            else
-            { 
-                _repoSch.Add(sch);
-                return true;
-            }
-        }
+        //public bool AddSchedule(DoctorScheduleViewModel t)
+        //{
+        //    DoctorSchedule sch = t;
+        //    ICollection<DoctorSchedule> schedules = _repoSch.GetAll();
+        //    bool timetaken = false;
+        //    foreach (var item in schedules)
+        //    {
+        //        if (t.Time == item.Time)
+        //            timetaken = true;
+        //    }
+        //    if (timetaken == true)
+        //        return false;
+        //    else
+        //    { 
+        //        _repoSch.Add(sch);
+        //        return true;
+        //    }
+        //}
 
 
     }
