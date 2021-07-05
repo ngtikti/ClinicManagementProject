@@ -31,9 +31,7 @@ namespace ClinicManagementProject.Migrations
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EnteredPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RetypeEnteredPassword = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,13 +116,13 @@ namespace ClinicManagementProject.Migrations
 
             migrationBuilder.InsertData(
                 table: "Doctors",
-                columns: new[] { "Doctor_Id", "Age", "Discriminator", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Username" },
-                values: new object[] { 1, 30, "Doctor", "Male", "TimDoc", new byte[] { 0 }, new byte[] { 0 }, "323524523", "docabc" });
+                columns: new[] { "Doctor_Id", "Age", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Specialization", "Username" },
+                values: new object[] { 1, 30, "Male", "TimDoc", new byte[] { 0 }, new byte[] { 0 }, "323524523", null, "docabc" });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
-                columns: new[] { "Doctor_Id", "Age", "Discriminator", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Username" },
-                values: new object[] { 2, 30, "Doctor", "Male", "TiDoc", new byte[] { 0, 0 }, new byte[] { 0, 0 }, "323524523", "docoof" });
+                columns: new[] { "Doctor_Id", "Age", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Specialization", "Username" },
+                values: new object[] { 2, 30, "Male", "TiDoc", new byte[] { 0, 0 }, new byte[] { 0, 0 }, "323524523", null, "docoof" });
 
             migrationBuilder.InsertData(
                 table: "Patients",

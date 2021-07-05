@@ -298,3 +298,17 @@ C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razo
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Patient\UpdateParticulars.cshtml.g.cs
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Patient\ChangePassword.cshtml.g.cs
 C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\AdminConsole.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\DocAddTimeSlot.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\DocMain.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\DocRegNew.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\DocViewSchedule.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\Login.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatMain.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatPaidPass.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatPayment.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatRegNew.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatSearchAll.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\PatViewAll.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\Register.cshtml.g.cs
+C:\Users\ngtik\Dropbox\dotnet Work\ClinicManagementProject\obj\Debug\net5.0\Razor\Views\Admin\_AdminLayout.cshtml.g.cs

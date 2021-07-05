@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicManagementProject.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ClinicManagementProject.Services
 {
-    public class ConsultationDetailRepo : IRepo<ConsultationDetail, int>
+    public class ConsultationDetailRepo : IConsult<ConsultationDetail, int>
     {
         private readonly ClinicManagementContext _context;
         private readonly ILogger<ConsultationDetailRepo> _logger;
@@ -83,6 +84,13 @@ namespace ClinicManagementProject.Services
             return null;
         }
 
+        public ConsultationDetail Get(string k)
+        {
+            var detail = _context.ConsultationDetails.SingleOrDefault(p => p.Consultation_Id == Convert.ToInt32(k));
+            return detail;
+        }
+
+
         public ICollection<ConsultationDetail> GetAll()
         {
             if (_context.ConsultationDetails.Count() == 0)
@@ -93,9 +101,39 @@ namespace ClinicManagementProject.Services
             return _context.ConsultationDetails.ToList();
         }
 
+
+        public ICollection<ConsultationDetail> GetAll(string pend)
+        {
+            if (_context.ConsultationDetails.Count() == 0)
+            {
+                _logger.LogInformation("No Consultation record");
+                return null;
+            }
+            return _context.ConsultationDetails.Include(c => c.Patient).Where(p => p.Consultation_Status.ToLower() == pend.ToLower()).ToList();
+        }
+
         public ICollection<ConsultationDetail> GetAll(int id)
         {
             throw new NotImplementedException();
+        }
+
+
+
+        public bool Update(string k)
+        {
+            try
+            {
+                var detail = Get(k);
+                detail.Consultation_Status = "Consultation Closed";
+                _context.Update(detail);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Unable to update the pizza details" + k + " " + e.Message);
+            }
+            return false;
         }
     }
 }

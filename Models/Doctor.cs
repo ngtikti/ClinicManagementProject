@@ -29,6 +29,8 @@ namespace ClinicManagementProject.Models
         public int Age { get; set; }
         public string Phone { get; set; }
 
+        public string? Specialization { get; set; }
+
         //need schedule...one doctor to many timeslots
         public List<DoctorSchedule> DoctorScheduleSlots { get; set; }
     }

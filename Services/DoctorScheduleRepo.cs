@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ClinicManagementProject.Services
 {
-    public class DoctorScheduleRepo : IRepo<DoctorSchedule, List<int>> //List<int> is to pass composite key {Timeslot_Id, Doctor_Id}
+    public class DoctorScheduleRepo : IScheduleD<DoctorSchedule, List<int>> //List<int> is to pass composite key {Timeslot_Id, Doctor_Id}
     {
         private readonly ClinicManagementContext _context;
         private readonly ILogger<DoctorScheduleRepo> _logger;
@@ -20,8 +20,22 @@ namespace ClinicManagementProject.Services
 
         public bool Add(DoctorSchedule t)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.DoctorSchedules.Add(t);
+                _context.SaveChanges();
+                _logger.LogInformation("Doctor registered", t);
+                return true;
+            }
+
+            catch (Exception e)
+            {
+                _logger.LogError("Could not register doctor " + DateTime.Now.ToString());
+                _logger.LogError("The details " + e.Message);
+            }
+            return false;
         }
+
 
         public bool Delete(List<int> k) //deleting the entire schedule slot
         {
@@ -88,6 +102,33 @@ namespace ClinicManagementProject.Services
                 return null;
             }
             return _context.DoctorSchedules.Where(ds => ds.Doctor_Id == id).ToList();
+        }
+
+        public bool AddSchedule(DoctorSchedule t)
+        {
+            DoctorSchedule sch = t;
+            ICollection<DoctorSchedule> schedules = GetAll(sch.Doctor_Id);
+            bool timetaken = false;
+            int count = 0;
+            foreach (var item in schedules)
+            {
+                if (t.Time == item.Time)
+                {
+                    timetaken = true;
+                    break;
+                }
+                if (item.Timeslot_Id > 0)
+                    count = item.Timeslot_Id;
+            }
+
+            if (timetaken == true)
+                return false;
+            else
+            {
+                sch.Timeslot_Id += count + 1;
+                Add(sch);
+                return true;
+            }
         }
     }
 }

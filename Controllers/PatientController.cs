@@ -19,7 +19,7 @@ namespace ClinicManagementProject.Controllers
         private readonly IRepo<DoctorSchedule, List<int>> _doctorschedulerepo;
         private readonly IRepo<ConsultationDetail, int> _consultationdetailrepo;
 
-        public PatientController(IRepo<Patient, string> patientrepo, IRepo<Doctor,string> doctorrepo, IRepo<DoctorSchedule, List<int>> doctorschedulerepo, IRepo<ConsultationDetail,int> consultationdetailrepo,ILoginService<PatientViewModel, string> patientlogin)
+        public PatientController(IRepo<Patient, string> patientrepo, IRepo<Doctor,string> doctorrepo, IScheduleD<DoctorSchedule, List<int>> doctorschedulerepo, IConsult<ConsultationDetail,int> consultationdetailrepo,ILoginService<PatientViewModel, string> patientlogin)
         {
             //_context = context; //for passing context into actions in controller
             _patientrepo = patientrepo;

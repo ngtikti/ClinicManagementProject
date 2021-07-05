@@ -29,9 +29,17 @@ namespace ClinicManagementProject
             services.AddDbContext<ClinicManagementContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:companyCon"]));
             services.AddScoped<IRepo<Patient, string>, PatientRepo>();
             services.AddScoped<IRepo<Doctor, string>, DoctorRepo>();
-            services.AddScoped<IRepo<DoctorSchedule, List<int>>, DoctorScheduleRepo>();
-            services.AddScoped<IRepo<ConsultationDetail, int>, ConsultationDetailRepo>();
+            //services.AddScoped<IRepo<DoctorSchedule, List<int>>, DoctorScheduleRepo>();
+            //services.AddScoped<IRepo<ConsultationDetail, int>, ConsultationDetailRepo>();
             services.AddScoped<ILoginService<PatientViewModel, string>, PatientLoginService>();
+
+            services.AddScoped<IRepo<Admin, string>, AdminRepo>();
+            services.AddScoped<ILoginService<AdminViewModel, string>, AdminLoginService>();
+            services.AddScoped<IConsult<ConsultationDetail, int>, ConsultationDetailRepo>();
+            services.AddScoped<IScheduleD<DoctorSchedule, List<int>>, DoctorScheduleRepo>();
+            services.AddScoped<ILoginService<DoctorViewModel, string>, DoctorLoginService>();
+
+
             //services.AddScoped<PatientLoginService>();
         }
 

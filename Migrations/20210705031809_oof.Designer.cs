@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagementProject.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20210704143550_oof")]
+    [Migration("20210705031809_oof")]
     partial class oof
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,10 +78,6 @@ namespace ClinicManagementProject.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -99,6 +95,9 @@ namespace ClinicManagementProject.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Specialization")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -106,8 +105,6 @@ namespace ClinicManagementProject.Migrations
                     b.HasKey("Doctor_Id");
 
                     b.ToTable("Doctors");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Doctor");
 
                     b.HasData(
                         new
@@ -228,21 +225,6 @@ namespace ClinicManagementProject.Migrations
                             Phone = "32423434",
                             Username = "abc"
                         });
-                });
-
-            modelBuilder.Entity("ClinicManagementProject.Models.DoctorViewModel", b =>
-                {
-                    b.HasBaseType("ClinicManagementProject.Models.Doctor");
-
-                    b.Property<string>("EnteredPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RetypeEnteredPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("DoctorViewModel");
                 });
 
             modelBuilder.Entity("ClinicManagementProject.Models.ConsultationDetail", b =>
