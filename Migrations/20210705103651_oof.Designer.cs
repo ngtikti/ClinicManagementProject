@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicManagementProject.Migrations
 {
     [DbContext(typeof(ClinicManagementContext))]
-    [Migration("20210705031809_oof")]
+    [Migration("20210705103651_oof")]
     partial class oof
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,12 +23,38 @@ namespace ClinicManagementProject.Migrations
 
             modelBuilder.Entity("ClinicManagementProject.Models.Admin", b =>
                 {
-                    b.Property<string>("username")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Admin_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.HasKey("username");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Password")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Admin_Id");
 
                     b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Admin_Id = 1,
+                            Name = "MrTestAdmin",
+                            Password = new byte[] { 0 },
+                            PasswordSalt = new byte[] { 0 },
+                            Username = "testadmin"
+                        });
                 });
 
             modelBuilder.Entity("ClinicManagementProject.Models.ConsultationDetail", b =>
@@ -116,6 +142,7 @@ namespace ClinicManagementProject.Migrations
                             Password = new byte[] { 0 },
                             PasswordSalt = new byte[] { 0 },
                             Phone = "323524523",
+                            Specialization = "Childcare",
                             Username = "docabc"
                         },
                         new
@@ -127,6 +154,7 @@ namespace ClinicManagementProject.Migrations
                             Password = new byte[] { 0, 0 },
                             PasswordSalt = new byte[] { 0, 0 },
                             Phone = "323524523",
+                            Specialization = "Oncology",
                             Username = "docoof"
                         });
                 });

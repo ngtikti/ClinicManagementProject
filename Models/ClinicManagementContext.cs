@@ -28,7 +28,22 @@ namespace ClinicManagementProject.Models
             modelBuilder.Entity<DoctorSchedule>().HasKey(
                 ds => new {ds.Doctor_Id, ds.Timeslot_Id}
                 );
-            
+
+            modelBuilder.Entity<Admin>().HasData(
+                new Admin()
+                {
+                    Admin_Id = 1,
+                    Username="testadmin",
+                    Password= new byte[1],
+                    PasswordSalt = new byte[1],
+                    Name = "MrTestAdmin"
+
+                }
+                ); 
+
+
+
+
             modelBuilder.Entity<Patient>().HasData(
                 new Patient()
                 {
@@ -53,7 +68,8 @@ namespace ClinicManagementProject.Models
                     Phone="323524523",
                     Gender="Male",
                     Password=new byte[1],
-                    PasswordSalt=new byte[1] //just a place holder password to prevent exception..
+                    PasswordSalt=new byte[1], //just a place holder password to prevent exception..
+                    Specialization="Childcare"
                 });
             modelBuilder.Entity<Doctor>().HasData(
                 new Doctor()
@@ -65,7 +81,8 @@ namespace ClinicManagementProject.Models
                     Phone = "323524523",
                     Gender = "Male",
                     Password = new byte[2],
-                    PasswordSalt = new byte[2] //just a place holder password to prevent exception..
+                    PasswordSalt = new byte[2], //just a place holder password to prevent exception..
+                    Specialization="Oncology"
                 });
 
             //preset doctor schedule (2 slots for each of the 2 preset doctors)

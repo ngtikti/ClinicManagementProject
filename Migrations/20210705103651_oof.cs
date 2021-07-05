@@ -11,11 +11,16 @@ namespace ClinicManagementProject.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    username = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Admin_Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Admins", x => x.username);
+                    table.PrimaryKey("PK_Admins", x => x.Admin_Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,14 +120,18 @@ namespace ClinicManagementProject.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Doctors",
-                columns: new[] { "Doctor_Id", "Age", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Specialization", "Username" },
-                values: new object[] { 1, 30, "Male", "TimDoc", new byte[] { 0 }, new byte[] { 0 }, "323524523", null, "docabc" });
+                table: "Admins",
+                columns: new[] { "Admin_Id", "Name", "Password", "PasswordSalt", "Username" },
+                values: new object[] { 1, "MrTestAdmin", new byte[] { 0 }, new byte[] { 0 }, "testadmin" });
 
             migrationBuilder.InsertData(
                 table: "Doctors",
                 columns: new[] { "Doctor_Id", "Age", "Gender", "Name", "Password", "PasswordSalt", "Phone", "Specialization", "Username" },
-                values: new object[] { 2, 30, "Male", "TiDoc", new byte[] { 0, 0 }, new byte[] { 0, 0 }, "323524523", null, "docoof" });
+                values: new object[,]
+                {
+                    { 1, 30, "Male", "TimDoc", new byte[] { 0 }, new byte[] { 0 }, "323524523", "Childcare", "docabc" },
+                    { 2, 30, "Male", "TiDoc", new byte[] { 0, 0 }, new byte[] { 0, 0 }, "323524523", "Oncology", "docoof" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Patients",

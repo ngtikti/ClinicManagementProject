@@ -126,6 +126,11 @@ namespace ClinicManagementProject.Controllers
         {
 
             ICollection<DoctorSchedule> doctorSchedule = _doctorschedulerepo.GetAll(id); //getting all the doctorschedule according to doctorId
+            if (doctorSchedule == null)
+            {
+                ICollection<DoctorSchedule> nulldocsch = new List<DoctorSchedule>();
+                return View(nulldocsch);
+            }
             return View(doctorSchedule.Where(ds => ds.Patient_Id == null)); //displaying only the slots where patient_id has not been input
         }
 
@@ -266,7 +271,7 @@ namespace ClinicManagementProject.Controllers
             ICollection<ConsultationDetail> pendingPayment;
             if (consultationDetails !=null)
             {
-                pendingPayment = consultationDetails.Where(cd => cd.Patient_Id == patid && cd.Consultation_Status == "pending payment").ToList(); //view those appointments that were closed
+                pendingPayment = consultationDetails.Where(cd => cd.Patient_Id == patid && cd.Consultation_Status.ToLower() == "pending payment").ToList(); //view those appointments that were closed
             }
             else
             {
