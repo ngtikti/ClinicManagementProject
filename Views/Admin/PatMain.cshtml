@@ -6,36 +6,25 @@
 }
 <html>
 <head>
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
 </head>
 <body>
 
 
 
+    <h1 id="main" class="alert alert-success">Patient Directory</h1>
 
 
-    <table class="table table-sm">
-        <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Patient Name</th>
-                <th scope="col">Consultation Status</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <p>@Html.ActionLink("Search a Patient", "PatSearchAll")</p>
-                </td>
+    <section>
 
-                <td>
-                    <p>@Html.ActionLink("Patient Payment", "PatPayment")</p>
-                </td>
-            </tr>
+        <p>@Html.ActionLink("Search a Patient", "PatSearchAll")</p>
+    </section>
+    <section>
 
-        </tbody>
-    </table>
+        <p>@Html.ActionLink("Pending Payment Tickets", "PatPayment")</p>
+
+    </section>
     <section>
         @*@Html.ActionLink("Book Appointment", "BookAppointment", new { str = Model.Username })*@
 

@@ -98,7 +98,7 @@ namespace ClinicManagementProject.Services
                 _logger.LogInformation("No schedule found");
                 return null;
             }
-            return _context.ConsultationDetails.ToList();
+            return _context.ConsultationDetails.Include(c => c.Patient).ToList();
         }
 
 
@@ -114,7 +114,12 @@ namespace ClinicManagementProject.Services
 
         public ICollection<ConsultationDetail> GetAll(int id)
         {
-            throw new NotImplementedException();
+            if (_context.ConsultationDetails.Count() == 0)
+            {
+                _logger.LogInformation("No Consultation record");
+                return null;
+            }
+            return _context.ConsultationDetails.Include(c => c.Patient).Include(c=> c.Doctor).Where(p => p.Patient_Id == id).ToList();
         }
 
 

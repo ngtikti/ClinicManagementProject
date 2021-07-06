@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicManagementProject.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ClinicManagementProject.Services
@@ -101,7 +102,7 @@ namespace ClinicManagementProject.Services
                 _logger.LogInformation("No schedule found");
                 return null;
             }
-            return _context.DoctorSchedules.Where(ds => ds.Doctor_Id == id).ToList();
+            return _context.DoctorSchedules.Include(c => c.Patient).Where(ds => ds.Doctor_Id == id).ToList();
         }
 
         public bool AddSchedule(DoctorSchedule t)

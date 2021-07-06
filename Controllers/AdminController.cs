@@ -45,22 +45,25 @@ namespace ClinicManagementProject.Controllers
             return View(admin);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(AdminViewModel admin)
         {
-            bool flag = _adminLogin.Login(admin);
-            if (flag)
-            {
-                //log in success, means username and password correct
-                ViewData["Message"] = "Welcome!";
-                TempData["AdminUsername"] = admin.Username;
-                return RedirectToAction("AdminConsole", "Admin", admin); //view and controller syntax...and passing actual admin to the next...seems like ? to pass to next is too long due to password...have to only pass a part of it
-            }
-            else
-            {
-                //login fail
-                ViewData["Message"] = "Invalid Username or Password";
-                return View();//remain to same login page, and display invalid username or password
-            }
+           
+                bool flag = _adminLogin.Login(admin);
+                if (flag)
+                {
+                    //log in success, means username and password correct
+                    ViewData["Message"] = "Welcome!";
+                    TempData["AdminUsername"] = admin.Username;
+                    return RedirectToAction("AdminConsole", "Admin", admin); //view and controller syntax...and passing actual admin to the next...seems like ? to pass to next is too long due to password...have to only pass a part of it
+                }
+                else
+                {
+                    //login fail
+                    ViewData["Message"] = "Invalid Username or Password";
+                    return View();//remain to same login page, and display invalid username or password
+                }
+           
         }
 
         public ActionResult Register()
@@ -72,14 +75,19 @@ namespace ClinicManagementProject.Controllers
         [HttpPost]
         public ActionResult Register(AdminViewModel admin)
         {
-            bool flag = _adminLogin.Register(admin);
-            if (flag)
+            if (ModelState.IsValid)
             {
-                TempData["AdminUsername"] = admin.Username;
-                return RedirectToAction("Login", "Admin");
+                bool flag = _adminLogin.Register(admin);
+                if (flag)
+                {
+                    TempData["AdminUsername"] = admin.Username;
+                    return RedirectToAction("Login", "Admin");
+                }
+                ViewBag.Message = "Invalid entry. Please fill in again"; //if got time, think of a way to separate the diff errors (can use modelstate) (actually, invalidation is directly shown to cshtml if said. cool! now the only non mentioned, is invalid username)
+                return View();
             }
-            ViewBag.Message = "Invalid entry. Please fill in again"; //if got time, think of a way to separate the diff errors (can use modelstate) (actually, invalidation is directly shown to cshtml if said. cool! now the only non mentioned, is invalid username)
-            return View();
+            AdminViewModel admine = new AdminViewModel();
+            return View(admine);
         }
 
 
@@ -100,16 +108,22 @@ namespace ClinicManagementProject.Controllers
         [HttpPost]
         public ActionResult DocRegNew(DoctorViewModel doc)
         {
-            bool flag = _doctorLogin.Register(doc);
-            if (flag)
+            if (ModelState.IsValid)
             {
-                ViewData["Successful"] = "The registration of " + doc.Name + " is successfully registed.";
+                bool flag = _doctorLogin.Register(doc);
+                if (flag)
+                {
+                    ViewData["Successful"] = "The registration of " + doc.Name + " is successfully registed.";
 
-                return RedirectToAction("AdminConsole");
+                    return RedirectToAction("AdminConsole");
+                }
+
+
+                return View();
             }
+            DoctorViewModel doctor = new DoctorViewModel();
 
-
-            return View();
+            return View(doctor);
         }
 
         public ActionResult DocMain()
@@ -140,16 +154,22 @@ namespace ClinicManagementProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DocAddTimeSlot(DoctorScheduleViewModel timeSlot)
         {
-            DoctorSchedule newTimeSlot = timeSlot;
-            newTimeSlot.Time = timeSlot.EnteredTime;
-            newTimeSlot.Doctor_Id = Convert.ToInt32(TempData.Peek("DocId"));
-            bool flag = _scheduleRepo.AddSchedule(newTimeSlot);
-            if (flag)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("DocViewSchedule", "Admin", new { docid = newTimeSlot.Doctor_Id });
+                DoctorSchedule newTimeSlot = timeSlot;
+                newTimeSlot.Time = timeSlot.EnteredTime;
+                newTimeSlot.Doctor_Id = Convert.ToInt32(TempData.Peek("DocId"));
+                bool flag = _scheduleRepo.AddSchedule(newTimeSlot);
+                if (flag)
+                {
+                    return RedirectToAction("DocViewSchedule", "Admin", new { docid = newTimeSlot.Doctor_Id });
+                }
+                ViewBag.Message = "Invalid entry. Please fill in again"; //if got time, think of a way to separate the diff errors (can use modelstate) (actually, invalidation is directly shown to cshtml if said. cool! now the only non mentioned, is invalid username)
+                return View();
             }
-            ViewBag.Message = "Invalid entry. Please fill in again"; //if got time, think of a way to separate the diff errors (can use modelstate) (actually, invalidation is directly shown to cshtml if said. cool! now the only non mentioned, is invalid username)
-            return View();
+            DoctorScheduleViewModel timeSlote = new DoctorScheduleViewModel();
+
+            return View(timeSlote);
         }
 
         public ActionResult PatMain()
@@ -170,23 +190,29 @@ namespace ClinicManagementProject.Controllers
         [HttpPost]
         public ActionResult PatRegNew(PatientViewModel pat)
         {
-            bool flag = _patientLogin.Register(pat);
-            if (flag)
+            if (ModelState.IsValid)
             {
-                ViewData["Successful"] = "The registration of " + pat.Name + " is successfully registed.";
+                bool flag = _patientLogin.Register(pat);
+                if (flag)
+                {
+                    ViewData["Successful"] = "The registration of " + pat.Name + " is successfully registed.";
 
-                return RedirectToAction("AdminConsole");
+                    return RedirectToAction("AdminConsole");
+                }
+
+
+                return View();
             }
+            PatientViewModel patient = new PatientViewModel();
 
-
-            return View();
+            return View(patient);
         }
 
         public ActionResult PatPayment()
         {
             string pend = "Pending Payment";
             //ICollection<ConsultationDetail> cDetail = _consultRepo.GetAll(pend);
-            ICollection<ConsultationDetail> cDetail = _consultRepo.GetAll().Where(p => p.Consultation_Status==pend).ToList();
+            ICollection<ConsultationDetail> cDetail = _consultRepo.GetAll().Where(p => p.Consultation_Status.ToLower() == pend.ToLower()).ToList();
             return View(cDetail);
         }
 
@@ -197,5 +223,52 @@ namespace ClinicManagementProject.Controllers
 
             return RedirectToAction("PatPayment");
         }
+        public ActionResult PatPaidAllPass(int conid, int patiid)
+        {
+
+            string id = Convert.ToString(conid);
+            _consultRepo.Update(id);
+
+            return RedirectToAction("PatAllCon","Admin", new { patid = patiid });
+        }
+
+        public ActionResult PatSearchAll()
+        {
+
+            Patient patient = new Patient();
+
+            return View(patient);
+        }
+
+        [HttpPost]
+        public ActionResult PatSearchAll(Patient patient)
+        {
+            
+            return RedirectToAction("PatSearch", new { pat = patient.Name });
+        }
+
+        public ActionResult PatSearch(string pat)
+        {
+            ICollection<Patient> patients = _patientRepo.GetAll().Where(n => n.Name.ToLower() == pat.ToLower()).ToList();
+            if(patients.Count() == 0)
+            {
+                @ViewBag.Message = "No Record Found, ";
+            }
+            return View(patients);
+        }
+
+        public ActionResult PatViewAll()
+        {
+            ICollection<Patient> patients = _patientRepo.GetAll().ToList();
+            return View(patients);
+        }
+        public ActionResult PatAllCon(int patid)
+        {
+            ICollection<ConsultationDetail> patAllCons = _consultRepo.GetAll(patid).ToList();
+            return View(patAllCons);
+        }
+
+
+
     }
 }

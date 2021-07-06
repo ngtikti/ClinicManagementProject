@@ -6,7 +6,8 @@
 }
 <html>
 <head>
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
 </head>
 <body>
 
@@ -32,8 +33,7 @@
                     <td> @Html.DisplayFor(model => item.Patient.Name) </td>
                     <td> @Html.DisplayFor(model => item.Consultation_Status) </td>
                     <td>
-                        <p>@Html.ActionLink("View Patient", "Index", new { patid = item.Patient_Id })</p>
-                        <p>@Html.ActionLink("View Consultation Detail", "Index", new { conid = item.Consultation_Id })</p>
+                        <p>@Html.ActionLink("View Patient", "PatAllCon", new { patid = item.Patient_Id })</p>
                         <p>@Html.ActionLink("Complete Payment", "PatPaidPass", new { conid = item.Consultation_Id })</p>
                     </td>
                 </tr>
@@ -45,7 +45,7 @@
     <section>
         @*@Html.ActionLink("Book Appointment", "BookAppointment", new { str = Model.Username })*@
 
-        <p>@Html.ActionLink("Register New Patient", "PatRegNew")</p>
+        <p>@Html.ActionLink("Back to Main Page", "PatMain")</p>
 
 
 
